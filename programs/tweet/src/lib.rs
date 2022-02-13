@@ -32,6 +32,31 @@ pub mod tweet {
 
         Ok(())
     }
+
+    pub fn like_my_tweet(
+        ctx: Context<LikeTweet>,
+        user_liking_tweet: Pubkey
+    ) -> ProgramResult {
+        let tweet = &mut ctx.accounts.tweet;
+
+        if tweet.message.trim().is_empty() {
+            return Err(Errors::InvalidTweet.into());
+        }
+
+        if tweet.likes >= 5 {
+            return Err(Errors::MaxLikesReached.into());
+        }
+
+        let mut iter = tweet.people_that_liked.iter();
+        if iter.any(|&v| v == user_liking_tweet) {
+            return Err(Errors::UserLikedAlready.into());
+        }
+
+        tweet.likes += 1;
+        tweet.people_that_liked.push(user_liking_tweet);
+
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -49,12 +74,20 @@ pub struct WriteTweet<'info> {
     pub tweet: Account<'info, Tweet>,
 }
 
+#[derive(Accounts)]
+pub struct LikeTweet<'info> {
+    #[account(mut)]
+    pub tweet: Account<'info, Tweet>
+}
+
 #[account]
 #[derive(Default)]
 pub struct Tweet {
     message: String,
     likes: u128,
     creator: Pubkey,
+    // with  #[derive(Default)] we can assign default values
+    people_that_liked: Vec<Pubkey>,
 }
 
 #[error]
@@ -63,4 +96,10 @@ pub enum Errors {
     CantUpdateTweet,
     #[msg("The tweet message can't be empty")]
     NoMessage,
+    #[msg("Can't like a tweet without a valid message")]
+    InvalidTweet,
+    #[msg("That tweet has received the maximum amount of likes already")]
+    MaxLikesReached,
+    #[msg("The user liked the tweet already")]
+    UserLikedAlready,
 }
