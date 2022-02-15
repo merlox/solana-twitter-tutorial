@@ -23,7 +23,7 @@ pub mod tweet {
             return Err(Errors::CantUpdateTweet.into());
         }
         if message.trim().is_empty() {
-            return Err(Errors::NoMessage.into());
+            return Err(Errors::EmptyTweet.into());
         }
 
         tweet.message = message;
@@ -95,7 +95,7 @@ pub enum Errors {
     #[msg("That tweet message can't be updated")]
     CantUpdateTweet,
     #[msg("The tweet message can't be empty")]
-    NoMessage,
+    EmptyTweet,
     #[msg("Can't like a tweet without a valid message")]
     InvalidTweet,
     #[msg("That tweet has received the maximum amount of likes already")]
