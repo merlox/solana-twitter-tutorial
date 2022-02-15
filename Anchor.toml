@@ -1,11 +1,11 @@
-[programs.localnet]
-tweet = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+[programs.devnet]
+tweet = "2rC3dHHk5B91q27fDqCKEZ9qKT8Cgeo1JpQdsdCeNHs5"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/Users/merunas/.config/solana/id.json"
 
 [scripts]

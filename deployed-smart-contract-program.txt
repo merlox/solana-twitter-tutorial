@@ -2,6 +2,10 @@ generated with:
 
 `solana address -k target/deploy/tweet-keypair.json`
 
+then deployed after updating the Anchor.toml and lib.rs with:
+
+`anchor deploy`
+
 address:
 
 2rC3dHHk5B91q27fDqCKEZ9qKT8Cgeo1JpQdsdCeNHs5
